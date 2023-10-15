@@ -1,14 +1,12 @@
 import telebot
 
-from app.services.names import equipment
-from app.services.types import equipment_catalog
+
 from app.services.keywords import get_keywords,get_names
 import json
 from app.services import get_current_names, get_current_brands, get_brand_current_names
 
 from telebot.types import ReplyKeyboardRemove, Message
 from app.services import storage, get_all_id, get_all_names, get_all_brands, get_all_types,get_keywords_list
-from app.services.keys import keys3
 from app.keyboards.catalog import gen_main_keyboard, gen_search_keyboard, \
     get_info_brand, gen_second_keyboard, gen_third_keyboard, get_info, get_brands_keyboard, \
     get_second_brand_keybord, get_mail_keyboard, get_manual_keyboard
@@ -19,11 +17,7 @@ from main import bot,admin_id
 from app.handlers.start import start
 
 keys = []
-for key in equipment_catalog.keys():
-    keys.append(key)
-keys2 = []
-for key in equipment.keys():
-    keys2.append(key)
+
 kol = 0
 with open('app/services/equipment.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
@@ -131,13 +125,7 @@ def search(message: Message):
             else:
                 bot.send_message(message.chat.id, "Название должно быть длинее 1 символов")
 
-        case 'search_info':
-            for item in keys2:
-                if message.text.lower() in item.lower():
-                    bot.send_message(message.chat.id, search_info(message.text))
-                    storage.set_state(chat_id=message.chat.id, user_id=message.from_user.id,
-                                      state='search')
-                    storage.reset_data(chat_id=message.chat.id, user_id=message.from_user.id)
+
 
         case 'brand_type':
             brands = get_all_brands()
